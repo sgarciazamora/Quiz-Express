@@ -2,14 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const archiver = require('archiver');
 
-// Gets the assignment path from args[2]
-if (!(args.length > 2)) {
-    console.error("Assignment path not found");
-    process.exit(1);
-}
-const orig = path.resolve(args[2]);
-
-console.log(__dirname);
+const orig = path.resolve(path.join(__dirname, "../quiz_express"));
 const dest = path.resolve(path.join(__dirname ,"../CORE19-08_quiz_express.zip"));
 const output = fs.createWriteStream(orig);
 const archive = archiver('zip', {
