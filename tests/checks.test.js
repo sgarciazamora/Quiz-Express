@@ -176,7 +176,7 @@ describe("CORE19-08_quiz_express", function () {
     it('', async function () {
         const expected = /credits/img;
         this.name = `8: Checking that the server shows '${expected}' at ${url}...`;
-        this.score = 1;
+        this.score = 2;
         if (error_critical) {
             this.msg_err = error_critical;
             should.not.exist(error_critical);
@@ -197,7 +197,7 @@ describe("CORE19-08_quiz_express", function () {
     it('', async function () {
         const expected = /quizzes/img;
         this.name = `9: Checking that the server shows '${expected}' at ${url}...`;
-        this.score = 1;
+        this.score = 2;
         if (error_critical) {
             this.msg_err = error_critical;
             should.not.exist(error_critical);
@@ -258,7 +258,7 @@ describe("CORE19-08_quiz_express", function () {
     it('', async function () {
         const expected = "Answer Number 1";
         this.name = `12: Checking that the server shows the questions at ${url+"/quizzes"}...`;
-        this.score = 1;
+        this.score = 2;
         if (error_critical) {
             this.msg_err = error_critical;
             should.not.exist(error_critical);
@@ -281,7 +281,7 @@ describe("CORE19-08_quiz_express", function () {
             server.kill();
             await timeout(T_WAIT * 1000);
         }
-        fs.copySync(quizzes_back, quizzes_orig, {"overwrite": true});
+        try {fs.copySync(quizzes_back, quizzes_orig, {"overwrite": true});} catch (e){}
     });
 
 });
