@@ -87,6 +87,7 @@ describe("CORE19-08_quiz_express", function () {
         }});
 
     it('', async function () {
+        const expected = "npm install";
         this.name = `4(Precheck): Installing dependencies...`;
         this.score = 0;
         if (error_critical) {
@@ -96,7 +97,10 @@ describe("CORE19-08_quiz_express", function () {
             this.msg_ok = "Dependencies installed successfully";
             this.msg_err = "Error installing dependencies";
             //install dependencies
-            [error_deps, _] = child_process.execSync("npm install", {cwd: path_assignment});
+            [error_deps, output] = await to(new Promise((resolve, reject) => {
+                child_process.exec(expected, {cwd: path_assignment}, (err, stdout) =>
+                    err ? reject(err) : resolve(stdout))
+            }));
             if (error_deps) {
                 this.msg_err = "Error installing dependencies: " + error_deps;
                 error_critical = this.msg_err;
