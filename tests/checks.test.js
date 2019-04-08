@@ -8,6 +8,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const Utils = require('./utils');
 const to = require('./to');
+const child_process = require("child_process");
 const spawn = require("child_process").spawn;
 const Browser = require('zombie');
 
@@ -18,9 +19,10 @@ let error_critical = null;
 const T_WAIT = 2; // Time between commands
 const T_TEST = 2 * 60; // Time between tests (seconds)
 const path_assignment = path.resolve(path.join(__dirname, "../quiz_express"));
+const path_json = path.join(path_assignment, 'package.json');
 const quizzes_orig = path.join(path_assignment, 'quizzes.sqlite');
 const quizzes_back = path.join(path_assignment, 'quizzes.original.sqlite');
-const quizzes_test = path.join(path_assignment, 'tests', 'quizzes.sqlite');
+const quizzes_test = path.join(__dirname, 'quizzes.sqlite');
 const browser = new Browser();
 const url = "http://localhost:3000/quizzes";
 
@@ -52,9 +54,8 @@ describe("CORE19-08_quiz_express", function () {
             this.msg_err = error_critical;
             should.not.exist(error_critical);
         } else {
-            this.msg_ok = "Dependencies installed successfully";
-            this.msg_err = "Error installing dependencies";
-            const path_json = path.join(path_assignment, 'package.json');
+            this.msg_ok = "'package.json' file found";
+            this.msg_err = `Error: 'package.json' file not found at ${path_json}`;
             const [json_nok, json_ok] = await to(fs.pathExists(path_json));
             if (json_nok || !json_ok) {
                 this.msg_err = `The file '${path_json}' has not been found`;
@@ -71,18 +72,18 @@ describe("CORE19-08_quiz_express", function () {
             should.not.exist(error_critical);
         } else {
             this.msg_ok = "The 'package.json' file has the right format";
-            this.msg_err = "Error parsing the 'package.json' file";
+            this.msg_err = `Error: parsing the 'package.json' file at ${path_json}`;
             const [error_json, contenido] = await to(fs.readFile(path_json, 'utf8'));
             if (error_json) {
                 this.msg_err = `The file '${path_json}' doesn't have the right format`;
                 error_critical = this.msg_err;
             }
-            should.not.exist(error_json);
+            should.not.exist(error_critical);
             const is_json = Utils.isJSON(contenido);
             if (!is_json) {
                 error_critical = this.msg_err;
             }
-            is_json.should.be.equal(true);
+            should.not.exist(error_critical);
         }});
 
     it('', async function () {
@@ -101,7 +102,8 @@ describe("CORE19-08_quiz_express", function () {
                 error_critical = this.msg_err;
             }
             should.not.exist(error_critical);
-        }});
+        }
+    });
 
     it('', async function () {
         this.name = `5(Precheck): Replacing answers file...`;
@@ -113,19 +115,14 @@ describe("CORE19-08_quiz_express", function () {
             this.msg_ok = "'quizzes.sqlite' replaced successfully";
             this.msg_err = "Error replacing 'quizzes.sqlite'";
             let error_deps;
-            try {
-                fs.copySync(quizzes_orig, quizzes_back, {"overwrite": true});
-                fs.copySync(quizzes_test, quizzes_orig, {"overwrite": true});
-            } catch (e) {
-                error_deps = e;
-            }
+            try {fs.copySync(quizzes_orig, quizzes_back, {"overwrite": true});} catch (e){}
+            [error_deps, _] = await to(fs.copy(quizzes_test, quizzes_orig, {"overwrite": true}));
             if (error_deps) {
                 this.msg_err = "Error copying the answers file: " + error_deps;
-                error_critical = this.msg_err;
             }
-            should.not.exist(error_critical);
-
-        }});
+            should.not.exist(error_deps);
+        }
+    });
 
     it('', async function () {
         this.name = `6: Launching the server...`;
@@ -134,8 +131,9 @@ describe("CORE19-08_quiz_express", function () {
             this.msg_err = error_critical;
             should.not.exist(error_critical);
         } else {
-            this.msg_ok = `'${path_file}' has been launched correctly`;
-            server = spawn("node", [path_file], {cwd: path_assignment});
+            this.msg_ok = `'The server has been launched correctly`;
+            this.msg_err = `Error running 'node bin/www'`;
+            server = spawn("node", ["bin/www"], {cwd: path_assignment});
             let error_launch = "";
             server.on('error', function (data) {
                 error_launch += data
@@ -144,7 +142,7 @@ describe("CORE19-08_quiz_express", function () {
                 error_launch += data
             });
             await to(timeout(T_WAIT * 1000));
-            this.msg_err = `Error launching '${path_file}'<<\n\t\t\tReceived: ${error_launch}`;
+            this.msg_err = `Error running 'node bin/www'\n\t\t\tReceived: ${error_launch}`;
             if (error_launch.length) {
                 error_critical = this.msg_err;
                 should.not.exist(error_critical);
