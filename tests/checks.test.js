@@ -96,7 +96,7 @@ describe("CORE19-08_quiz_express", function () {
             this.msg_ok = "Dependencies installed successfully";
             this.msg_err = "Error installing dependencies";
             //install dependencies
-            [error_deps, _] = await to(child_process.exec("npm install", {cwd: path_assignment}));
+            [error_deps, _] = child_process.execSync("npm install", {cwd: path_assignment});
             if (error_deps) {
                 this.msg_err = "Error installing dependencies: " + error_deps;
                 error_critical = this.msg_err;
