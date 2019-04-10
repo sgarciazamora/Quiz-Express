@@ -24,7 +24,7 @@ const quizzes_orig = path.join(path_assignment, 'quizzes.sqlite');
 const quizzes_back = path.join(path_assignment, 'quizzes.original.sqlite');
 const quizzes_test = path.join(__dirname, 'quizzes.sqlite');
 const browser = new Browser();
-const url = "http://localhost:3000/quizzes";
+const url = "http://localhost:3000";
 
 // HELPERS
 const timeout = ms => new Promise(res => setTimeout(res, ms));
