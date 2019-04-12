@@ -255,7 +255,7 @@ describe("CORE19-08_quiz_express", function () {
     });
 
     it('', async function () {
-        const expected = "Answer Number 1";
+        const expected = "Question Number 1";
         this.name = `12: Checking that the server shows the questions at ${url+"/quizzes"}...`;
         this.score = 2;
         if (error_critical) {
