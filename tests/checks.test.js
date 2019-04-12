@@ -16,8 +16,8 @@ const Browser = require('zombie');
 let error_critical = null;
 
 // CONSTANTS
-const T_WAIT = 2; // Time between commands
-const T_TEST = 2 * 60; // Time between tests (seconds)
+const T_WAIT = 10; // Server launch time (seconds)
+const T_TEST = 5 * 60; // Time between tests (seconds)
 const path_assignment = path.resolve(path.join(__dirname, "../quiz_express"));
 const path_json = path.join(path_assignment, 'package.json');
 const quizzes_orig = path.join(path_assignment, 'quizzes.sqlite');
