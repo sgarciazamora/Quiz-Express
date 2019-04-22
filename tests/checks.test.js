@@ -1,5 +1,5 @@
 /**
- * Corrector para la práctica de sql
+ * Corrector para la práctica CORE19-08_quiz_express
  */
 
 // IMPORTS
@@ -165,8 +165,6 @@ describe("CORE19-08_quiz_express", function () {
             [error_nav, resp] = await to(browser.visit(expected));
             if (error_nav) {
                 this.msg_err = `Server not responding at ${expected}\nError:${error_nav}\nReceived:${browser.text('body')}`;
-                error_critical = this.msg_err;
-                should.not.exist(error_critical);
             }
             should.not.exist(error_nav);
         }
@@ -185,8 +183,6 @@ describe("CORE19-08_quiz_express", function () {
             [error_nav, resp] = await to(browser.visit(url));
             if (error_nav) {
                 this.msg_err = `Server not responding at ${url}\n\t\tError:${error_nav}\n\t\tReceived:${browser.text('body')}`;
-                error_critical = this.msg_err;
-                should.not.exist(error_critical);
             }
             this.msg_ok = `'${expected}' not found at ${url}\n\t\tReceived:${browser.text('body')}`;
             Utils.search(expected, browser.text('body')).should.be.equal(true);
@@ -206,8 +202,6 @@ describe("CORE19-08_quiz_express", function () {
             [error_nav, resp] = await to(browser.visit(url));
             if (error_nav) {
                 this.msg_err = `Server not responding at ${url}\n\t\tError:${error_nav}\n\t\tReceived:${browser.text('body')}`;
-                error_critical = this.msg_err;
-                should.not.exist(error_critical);
             }
             this.msg_ok = `'${expected}' not found at ${url}\n\t\tReceived:${browser.text('body')}`;
             Utils.search(expected, browser.text('body')).should.be.equal(true);
@@ -227,8 +221,6 @@ describe("CORE19-08_quiz_express", function () {
             [error_nav, resp] = await to(browser.visit(expected));
             if (error_nav) {
                 this.msg_err = `Server not responding at ${url}\nError:${error_nav}\nReceived:${browser.text('body')}`;
-                error_critical = this.msg_err;
-                should.not.exist(error_critical);
             }
             should.not.exist(error_nav);
         }
@@ -247,8 +239,6 @@ describe("CORE19-08_quiz_express", function () {
             [error_nav, resp] = await to(browser.visit(expected));
             if (error_nav) {
                 this.msg_err = `Server not responding at ${url}\nError:${error_nav}\nReceived:${browser.text('body')}`;
-                error_critical = this.msg_err;
-                should.not.exist(error_critical);
             }
             should.not.exist(error_nav);
         }
@@ -267,8 +257,7 @@ describe("CORE19-08_quiz_express", function () {
             [error_nav, resp] = await to(browser.visit(url+"/quizzes"));
             if (error_nav) {
                 this.msg_err = `Server not responding at ${url+"/quizzes"}\n\t\tError:${error_nav}\n\t\tReceived:${browser.text('body')}`;
-                error_critical = this.msg_err;
-                should.not.exist(error_critical);
+                should.not.exist(error_nav);
             }
             this.msg_ok = `'${expected}' not found at ${url}\n\t\tReceived:${browser.text('body')}`;
             Utils.search(expected, browser.text('body')).should.be.equal(true);
